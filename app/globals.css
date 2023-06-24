@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: black;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: black;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: #F8BF29;
+  background-color: var(--foreground-rgb)
+}
+
+.cardBgColor{
+  background-color :#1A1A1A
+}
+@media screen and (min-width:1280px) {
+  .h-200{
+    width: 276px;
+    height: 350px;
+  }
+    
+}
+
