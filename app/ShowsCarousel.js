@@ -22,7 +22,7 @@ export default function ShowsCarousel({shows}){
                                 {shows.map((movie, index) => {
 
                                     return(
-                                    <Slide index = {index}>
+                                    <Slide index = {index} key = {index}>
                                         <div className='flex  relative w-full sm:w-auto  h-full items-stretch cursor-pointer'>
                                         <img src= {movie.primaryImage !== null && "http://image.tmdb.org/t/p/w500/" + movie.poster_path} alt="black chair and white table" className=" w-full bg-black h-full h-200" />
                                         <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
@@ -65,7 +65,7 @@ export default function ShowsCarousel({shows}){
                             {shows.map((movie, index) => {
 
                                 return(
-                                <Slide index = {index}>
+                                <Slide index = {index} key={index}>
                                     <div className='flex  relative w-full sm:w-auto  h-full items-stretch cursor-pointer'>
                                     <img src= {movie.primaryImage !== null && "http://image.tmdb.org/t/p/w500/" + movie.poster_path} alt="black chair and white table" className=" w-full bg-black h-full h-200" />
                                     <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
@@ -110,7 +110,7 @@ export default function ShowsCarousel({shows}){
                             {shows.map((movie, index) => {
 
 return(
-<Slide index = {index}>
+<Slide index = {index} key={index}>
     <div className='flex  relative w-full sm:w-auto  h-full items-stretch cursor-pointer'>
     <img src= {movie.primaryImage !== null && "http://image.tmdb.org/t/p/w500/" + movie.poster_path} alt="black chair and white table" className=" w-full bg-black h-full h-200" />
     <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">

@@ -118,9 +118,9 @@ export default function Home() {
             <h2 className='font-bold inline text-2xl'>Found These:</h2>
             <button className='inline text-white ml-4 border-2 p-2 rounded px-4 ' onClick = {() => setSearchMovie([])}>Reset</button>
             <div className='flex flex-wrap justify-between'>
-                {searchMovie.map((movie) => {
+                {searchMovie.map((movie, index) => {
                     return(
-                        <div className='flex  w-1/5 m-1 items-center flex-col'>
+                        <div className='flex  w-1/5 m-1 items-center flex-col'key={index}>
                             <div className='flex relative mt-2   h-full items-stretch cursor-pointer'>
                                         <img src= {movie.poster_path !== undefined && "http://image.tmdb.org/t/p/w500/" + movie.poster_path} alt="black chair and white table" className=" w-full bg-black h-full " />
                                         <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
