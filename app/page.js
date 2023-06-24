@@ -157,7 +157,7 @@ export default function Home() {
 
         <section className='mb-2'>
             <div className=''>
-                <h2 className='font-bold text-2xl inline'>Don't know what to watch? Get a random movie!</h2>
+                <h2 className='font-bold text-2xl inline'>Don&apos;t know what to watch? Get a random movie!</h2>
     
             </div>
             <div className='flex items-center flex-col'>
