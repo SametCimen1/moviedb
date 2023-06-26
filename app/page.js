@@ -113,7 +113,6 @@ export default function Home() {
 
 
   
-)
 
 
       <section className='w-4/5  mx-auto mt-10'>
