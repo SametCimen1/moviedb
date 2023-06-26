@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import MovieCarousel from './MovieCarousel';
 import ShowsCarousel from './ShowsCarousel';
-
+import Head from 'next/head';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import "pure-react-carousel/dist/react-carousel.es.css";
 
@@ -16,7 +16,7 @@ export default function Home() {
   const [randomMovie, setRandomMovie] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchMovie, setSearchMovie] = useState([]);
-
+  const [searchClicked, setSearchClicked] = useState(false)
 
   const optionsMovie = {
     method: 'GET',
@@ -77,6 +77,7 @@ export default function Home() {
 
   return (
     <div>
+      <Head><title>MovieDB</title></Head>
                         <nav class="bg-white   border-gray-200 dark:bg-gray-900 w-full bg-blue-500">
                         <div className="w-4/5 flex flex-wrap items-center justify-between mx-auto p-4">
                         <a href="https://flowbite.com/" className="flex items-center">
@@ -94,7 +95,7 @@ export default function Home() {
                     </div>
                     <div className='flex'>
                         <input type="text" id="search-navbar" className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..."  onChange={(e)=>setSearchInput(e.target.value)}/>
-                        <button className='ml-2 rounded-lg border-2 text-white py-2 px-4 cursor-pointer hover:bg-white hover:text-black' onClick={() => getSearch()}>Search</button>
+                        <button className='ml-2 rounded-lg border-2 text-white py-2 px-4 cursor-pointer hover:bg-white hover:text-black' onClick={() => {getSearch(); setSearchClicked(true)}}>Search</button>
                     </div>
                     </div>
                     <button data-collapse-toggle="navbar-search" type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-search" aria-expanded="false">
@@ -111,27 +112,39 @@ export default function Home() {
 
 
 
+  
+)
+
+
       <section className='w-4/5  mx-auto mt-10'>
 
         
         <div>
-            <h2 className='font-bold inline text-2xl'>Found These:</h2>
-            <button className='inline text-white ml-4 border-2 p-2 rounded px-4 ' onClick = {() => setSearchMovie([])}>Reset</button>
-            <div className='flex flex-wrap justify-between'>
+            {searchClicked && 
+              <div>
+                <h2 className='font-bold inline text-2xl'>Found These:</h2>
+                <button className='inline text-white ml-4 border-2 p-2 rounded px-4 ' onClick = {() => {setSearchMovie([]); setSearchClicked(false)}}>Reset</button>
+              </div>
+            }
+            <div className='flex flex-wrap justify-start'>
                 {searchMovie.map((movie, index) => {
-                    return(
-                        <div className='flex  w-1/5 m-1 items-center flex-col'key={index}>
-                            <div className='flex relative mt-2   h-full items-stretch cursor-pointer'>
-                                        <img src= {movie.poster_path !== undefined && "http://image.tmdb.org/t/p/w500/" + movie.poster_path} alt="black chair and white table" className=" w-full bg-black h-full " />
-                                        <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-                                            <div className="flex h-full items-end pb-6">
-                                                <h3 className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white">{movie.original_title}</h3>
+                      if(movie.poster_path !== null){
+                        console.log('movie', movie)
+                        return(
+                          <a className='flex  w-1/6 items-center mt-4 flex-col hover:opacity-70'key={index} href = {`https://www.google.com/search?q=${movie.original_title}`}>
+                                <div className='flex relative mt-2 mx-2  h-full items-stretch cursor-pointer'>
+                                            <img src= {movie.poster_path !== undefined && "http://image.tmdb.org/t/p/w500/" + movie.poster_path} alt="Movie poster image" className=" w-full bg-black h-full " />
+                                            <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
+                                                <div className="flex h-full items-end pb-6">
+                                                    <h3 className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white">{movie.original_title}</h3>
+                                                </div>
                                             </div>
-                                        </div>
-                    
-                            </div>
-                        </div>
-                    )
+                         
+                                </div>
+                          </a>
+                        )
+                      }
+                  
                 })}
             </div>
             </div>
@@ -162,7 +175,7 @@ export default function Home() {
             </div>
             <div className='flex items-center flex-col'>
                 <div className='flex w-1/4 relative mt-2   h-full items-stretch cursor-pointer'>
-                            <img src= {randomMovie !== undefined && "http://image.tmdb.org/t/p/w500/" + randomMovie.poster_path} alt="black chair and white table" className=" w-full bg-black h-full " />
+                            <img src= {randomMovie !== undefined && "http://image.tmdb.org/t/p/w500/" + randomMovie.poster_path} alt="Movie poster image" className=" w-full bg-black h-full " />
                             <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
                                 <div className="flex h-full items-end pb-6">
                                     <h3 className="text-xl lg:text-2xl font-semibold leading-5 lg:leading-6 text-white">{randomMovie.original_title}</h3>
@@ -193,7 +206,7 @@ export default function Home() {
                                                         <Slide index = {0}>
                                                           <div className='flex flex-col relative w-full sm:w-auto h-full items-stretch cursor-pointer'>
                                                             <a href = "https://www.imdb.com/name/nm0331516/?ref_=nm_mv_close">
-                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTQzMjkwNTQ2OF5BMl5BanBnXkFtZTgwNTQ4MTQ4MTE@._V1_FMjpg_UY2048_.jpg" alt="black chair and white table" className=" w-full bg-black h-full h-200 object-fit" />
+                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTQzMjkwNTQ2OF5BMl5BanBnXkFtZTgwNTQ4MTQ4MTE@._V1_FMjpg_UY2048_.jpg" alt="Movie poster image" className=" w-full bg-black h-full h-200 object-fit" />
                                                                 <div className="bg-opacity-30 w-full h-full ">
                                                                 <p className='p-1 px-0'>Ryan Gosling</p>
                                                                 </div>
@@ -205,7 +218,7 @@ export default function Home() {
                                                         <Slide index = {1}>
                                                           <div className='flex flex-col relative w-full sm:w-auto h-full items-stretch cursor-pointer'>
                                                             <a href = "https://www.imdb.com/name/nm0000288/?ref_=nm_mv_close">
-                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTkxMzk4MjQ4MF5BMl5BanBnXkFtZTcwMzExODQxOA@@._V1_FMjpg_UY2048_.jpg" alt="black chair and white table" className=" w-full bg-black h-full h-200 object-cover" />
+                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTkxMzk4MjQ4MF5BMl5BanBnXkFtZTcwMzExODQxOA@@._V1_FMjpg_UY2048_.jpg" alt="Movie poster image" className=" w-full bg-black h-full h-200 object-cover" />
                                                                 <div className="bg-opacity-30 w-full h-full ">
                                                                 <p className='p-1 px-0'>Christian Bale</p>
                                                                 </div>
@@ -217,7 +230,7 @@ export default function Home() {
                                                         <Slide index = {2}>
                                                           <div className='flex flex-col relative w-full sm:w-auto h-full items-stretch cursor-pointer'>
                                                             <a href = "https://www.imdb.com/name/nm0000158/">
-                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTQ2MjMwNDA3Nl5BMl5BanBnXkFtZTcwMTA2NDY3NQ@@._V1_FMjpg_UY2048_.jpg" alt="black chair and white table" className=" w-full bg-black h-full h-200 object-cover" />
+                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTQ2MjMwNDA3Nl5BMl5BanBnXkFtZTcwMTA2NDY3NQ@@._V1_FMjpg_UY2048_.jpg" alt="Movie poster image" className=" w-full bg-black h-full h-200 object-cover" />
                                                                 <div className="bg-opacity-30 w-full h-full ">
                                                                 <p className='p-1 px-0'>Tom Hanks</p>
                                                                 </div>
@@ -228,7 +241,7 @@ export default function Home() {
                                                         <Slide index = {3}>
                                                           <div className='flex flex-col relative w-full sm:w-auto h-full items-stretch cursor-pointer'>
                                                             <a href = "https://www.imdb.com/name/nm1083271/">
-                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTc5MjgyMzk4NF5BMl5BanBnXkFtZTcwODk2OTM4Mg@@._V1_FMjpg_UX280_.jpg" alt="black chair and white table" className=" w-full bg-black h-full h-200 object-cover" />
+                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTc5MjgyMzk4NF5BMl5BanBnXkFtZTcwODk2OTM4Mg@@._V1_FMjpg_UX280_.jpg" alt="Movie poster image" className=" w-full bg-black h-full h-200 object-cover" />
                                                                 <div className="bg-opacity-30 w-full h-full ">
                                                                 <p className='p-1 px-0'>Megan Fox</p>
                                                                 </div>
@@ -240,7 +253,7 @@ export default function Home() {
                                                         <Slide index = {4}>
                                                           <div className='flex flex-col relative w-full sm:w-auto h-full items-stretch cursor-pointer'>
                                                             <a href = "https://www.imdb.com/name/nm0424060/?ref_=nm_mv_close">
-                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTM3OTUwMDYwNl5BMl5BanBnXkFtZTcwNTUyNzc3Nw@@._V1_FMjpg_UY2048_.jpg" alt="black chair and white table" className=" w-full bg-black h-full h-200 object-cover" />
+                                                                <img src="https://m.media-amazon.com/images/M/MV5BMTM3OTUwMDYwNl5BMl5BanBnXkFtZTcwNTUyNzc3Nw@@._V1_FMjpg_UY2048_.jpg" alt="Movie poster image" className=" w-full bg-black h-full h-200 object-cover" />
                                                                 <div className="bg-opacity-30 w-full h-full ">
                                                                 <p className='p-1 px-0'>Scarlett Johansson</p>
                                                                 </div>
@@ -251,7 +264,7 @@ export default function Home() {
                                                         <Slide index = {5}>
                                                           <div className='flex flex-col relative w-full sm:w-auto h-full items-stretch cursor-pointer'>
                                                             <a href = "https://www.imdb.com/name/nm0000138/">
-                                                                <img src="https://m.media-amazon.com/images/M/MV5BMjI0MTg3MzI0M15BMl5BanBnXkFtZTcwMzQyODU2Mw@@._V1_FMjpg_UX297_.jpg" alt="black chair and white table" className=" w-full bg-black h-full h-200 object-cover" />
+                                                                <img src="https://m.media-amazon.com/images/M/MV5BMjI0MTg3MzI0M15BMl5BanBnXkFtZTcwMzQyODU2Mw@@._V1_FMjpg_UX297_.jpg" alt="Movie poster image" className=" w-full bg-black h-full h-200 object-cover" />
                                                                 <div className="bg-opacity-30 w-full h-full ">
                                                                 <p className='p-1 px-0'>Leonardo DiCaprio</p>
                                                                 </div>
